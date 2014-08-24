@@ -1,12 +1,15 @@
 filter {
   if [path] =~ "access" {
-    grok {
-      patterns_dir => ["/logstash/patterns"]
-      match => ["message", "%{RUBY_LOGLEVEL} %{RUBY_LOGGER}" ]
-    }
-    date {
-      match => [ "timestamp", "dd/MMM/yyyy:HH:mm:ss Z", "dd/MMM/yyyy:HH:mm:ss" ]
-    }
+        grok {
+          match => [ "message", "\[%{TIMESTAMP_ISO8601:timestamp} #%{POSINT:pid}\] *%{UNICORN_LOGLEVEL} -- : %{GREEDYDATA:data}" ]
+        }
+        date {
+          match => ["timestamp", "ISO8601" ]
+        }
+        json {
+               source => "data"
+                #remove_field => [ "message" ]
+        }
   }
   else if [path] =~ "error" {
     mutate { replace => {type => "error"} }

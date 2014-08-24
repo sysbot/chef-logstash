@@ -3,5 +3,6 @@ input {
     path => ["<%= @input_file_name %>"]
     type => ["<%= @input_file_type %>"]
     start_position => "beginning"
+    exclude => "*.gz"
   }
 }
