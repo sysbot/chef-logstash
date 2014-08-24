@@ -7,9 +7,9 @@ output {
     cluster => "<%= @elasticsearch_cluster %>"
 <% end -%>
 <% if @protocol -%>
-    protcol => "<%= @protocol %>"
+    protocol => "<%= @protocol %>"
 <% else -%>
-  protcol => "http"
+  protocol => "http"
 <% end -%>
 <% if @elasticsearch_embedded -%>
     embedded => true
