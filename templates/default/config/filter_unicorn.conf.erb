@@ -1,0 +1,17 @@
+filter {
+  if [path] =~ "access" {
+    grok {
+      patterns_dir => ["/logstash/patterns"]
+      match => ["message", "%{RUBY_LOGLEVEL} %{RUBY_LOGGER}" ]
+    }
+    date {
+      match => [ "timestamp", "dd/MMM/yyyy:HH:mm:ss Z", "dd/MMM/yyyy:HH:mm:ss" ]
+    }
+  }
+  else if [path] =~ "error" {
+    mutate { replace => {type => "error"} }
+  }
+  else {
+    mutate { replace => {type => "random_logs"} }
+  }
+}
