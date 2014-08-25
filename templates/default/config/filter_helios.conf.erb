@@ -1,0 +1,20 @@
+filter {
+  grok {
+    patterns_dir => "/opt/instance_data/helios/patterns"
+    match => { "message" => "%{HELIOS_SERVER_PATTERN}"}
+  }
+
+  date {
+     match => [ "timestamp", "dd/MMM/yyyy HH:mm:ss" ]
+  }
+
+  mutate{
+     #Since split can't capture \n, we have to create another delimiter
+     gsub => ["queries", "\n", ";"]
+     split => ["queries", ";"]
+  }
+  mutate{
+     strip => ["queries"]
+     #remove_field => ["message"]
+  }
+}

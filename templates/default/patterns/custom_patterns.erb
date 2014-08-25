@@ -8,3 +8,8 @@ UNICORN_ANY_HEADER_LOG \[%{TIMESTAMP_ISO8601:timestamp} #%{POSINT:pid}\] *(?<log
 UNICORN_WARN_HEADER_LOG \[%{TIMESTAMP_ISO8601:timestamp} #%{POSINT:pid}\] *(?<loglevel>WARN) -- : %{GREEDYDATA:text}
 UNICORN_DEBUG_HEADER_LOG \[%{TIMESTAMP_ISO8601:timestamp} #%{POSINT:pid}\] *(?<loglevel>DEBUG) -- : %{GREEDYDATA:text}
 DNS_IPV4 (?<![0-9])(?:(?:25[0-5]|2[0-4][0-9]|[0-1]?[0-9]{1,2})[-](?:25[0-5]|2[0-4][0-9]|[0-1]?[0-9]{1,2})[-](?:25[0-5]|2[0-4][0-9]|[0-1]?[0-9]{1,2})[-](?:25[0-5]|2[0-4][0-9]|[0-1]?[0-9]{1,2}))(?![0-9])
+HELIOS_TIMESTAMP %{MONTHDAY}/%{MONTH}/%{YEAR} %{TIME}
+FIELD [\w\.]+
+HELIOS_API (%{FIELD:http_x_guid}|-) - (%{IPV4:remote_addr}|-) - (%{FIELD:remote_user}|-) - (%{FIELD:http_x_api_key}|-) - (%{FIELD:http_x_pcode}|-) - (%{FIELD:http_x_provider_id}|-) - \[%{TIMESTAMP:timestamp}\] \\?\"(?<request_method>\w*) (?<path_info>.+?) (?<http_version>.+?)\\?\" (?<response_status>\d+) (?<length>\d+) (?<duration>[\d\.]+) (?<memory_used>.+?) (?<memory_diff>.+)
+HELIOS_QUERIES (?<queries>(.*\n)*)
+HELIOS_SERVER_PATTERN %{QUERIES}%{API}%
