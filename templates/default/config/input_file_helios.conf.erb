@@ -1,0 +1,16 @@
+input {
+  file {
+    path => ["<%= @input_file_name %>"]
+    type => ["<%= @input_file_type %>"]
+    exclude => "*.gz"
+    start_position => "beginning"
+
+    ## sincedb will track the last location in the file it has read
+    sincedb_path => "/dev/null"
+
+    codec => multiline {
+      pattern => "^  \("
+      what => "next"
+    }
+  }
+}
