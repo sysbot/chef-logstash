@@ -5,4 +5,17 @@ input {
     start_position => "beginning"
     exclude => "*.gz"
   }
+  file {
+    path => "/opt/instance_data/helios/extracted/server*"
+    exclude => "*.gz"
+    start_position => "beginning"
+
+    ## sincedb will track the last location in the file it has read
+    sincedb_path => "/dev/null"
+
+    codec => multiline {
+      pattern => "^  \("
+      what => "next"
+    }
+  }
 }
