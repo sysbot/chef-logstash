@@ -2,4 +2,9 @@
 # see https://github.com/elasticsearch/logstash/tree/master/patterns
 # for pattern examples.
 #
-UNICORN_LOGLEVEL (?:ANY|DEBUG|FATAL|ERROR|WARN|INFO)
+LOGLEVEL (?:ANY|DEBUG|FATAL|ERROR|WARN|INFO)
+UNICORN_NO_HEADER_LOG (?<json_blob>\{.*\})
+UNICORN_ANY_HEADER_LOG \[%{TIMESTAMP_ISO8601:timestamp} #%{POSINT:pid}\] *(?<loglevel>ANY) -- : %{GREEDYDATA:json_blob}
+UNICORN_WARN_HEADER_LOG \[%{TIMESTAMP_ISO8601:timestamp} #%{POSINT:pid}\] *(?<loglevel>WARN) -- : %{GREEDYDATA:text}
+UNICORN_DEBUG_HEADER_LOG \[%{TIMESTAMP_ISO8601:timestamp} #%{POSINT:pid}\] *(?<loglevel>DEBUG) -- : %{GREEDYDATA:text}
+DNS_IPV4 (?<![0-9])(?:(?:25[0-5]|2[0-4][0-9]|[0-1]?[0-9]{1,2})[-](?:25[0-5]|2[0-4][0-9]|[0-1]?[0-9]{1,2})[-](?:25[0-5]|2[0-4][0-9]|[0-1]?[0-9]{1,2})[-](?:25[0-5]|2[0-4][0-9]|[0-1]?[0-9]{1,2}))(?![0-9])

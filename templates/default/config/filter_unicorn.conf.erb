@@ -1,14 +1,14 @@
 filter {
   if [path] =~ "access" {
         grok {
-          match => [ "message", "\[%{TIMESTAMP_ISO8601:timestamp} #%{POSINT:pid}\] *%{UNICORN_LOGLEVEL} -- : %{GREEDYDATA:data}" ]
+          match => [ "message", "%{UNICORN_NO_HEADER_LOG}|%{UNICORN_ANY_HEADER_LOG}|%{UNICORN_WARN_HEADER_LOG}|%{UNICORN_DEBUG_HEADER_LOG}" ]
         }
         date {
-          match => ["timestamp", "ISO8601" ]
+          match => ["timestamp", "ISO8601", "UNIX" ]
         }
         json {
-               source => "data"
-                #remove_field => [ "message" ]
+          source => "json_blob"
+          remove_field => [ "message" ]
         }
   }
   else if [path] =~ "error" {
